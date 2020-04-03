@@ -44,6 +44,9 @@ jspm_packages/
 package-lock.json
 client/package-lock.json
 
+# Server/backend
+backend/secrets.js
+
 # TypeScript v1 declaration files
 typings/
 

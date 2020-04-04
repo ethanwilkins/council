@@ -5,7 +5,10 @@ const mongoose = require('mongoose');
 const path = require('path');
 const posts = require('./routes/postRoute');
 const users = require('./routes/userRoute');
+const webFinger = require('./routes/webfingerRoute');
+const actor = require('./routes/actorRoute');
 const dbURI = process.env.REACT_APP_DB_URI || require('./secrets').dbURI;
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -37,6 +40,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger('dev'));
 app.use('/posts', posts);
 app.use('/users', users);
+
+// For ActivityPub and WebFinger
+app.use('/.well-known/webfinger', webFinger);
+app.use('/u', actor);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.resolve(__dirname, '..', 'client', 'build')));

@@ -7,15 +7,11 @@ export class WebFinger extends Component {
   callWebFinger = async () => {
     const resource = queryString.parse(this.props.location.search)['resource'];
     const response = await axios.get('/.well-known/webfinger', { params: { resource: resource } });
-
-
-
     return await JSON.stringify(response.data);
   };
 
   constructor(props) {
     super(props)
-
     this.state = {
       data: null
     }

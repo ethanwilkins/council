@@ -1,49 +1,49 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import queryString from 'query-string'
+
+import { getWebFinger } from '../actions/webfingerActions';
 
 export class WebFinger extends Component {
 
-  callWebFinger = async () => {
-    const resource = queryString.parse(this.props.location.search)['resource'];
-    console.log("Got here 1");
-    const response = await axios.get('/.well-known/webfinger', { params: { resource: resource } });
-    console.log("Got here 2");
-    return await JSON.stringify(response.data);
-  };
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      data: null
-    }
+  state = {
+    webFinger: null
   }
 
   componentDidMount = () => {
-    this.callWebFinger()
-      if (!this.state.data) {
-        this.callWebFinger().then(data => this.setState({data}))
-          .catch(err => { console.log("Could not load WebFinger.") });
-      }
+    const {
+      getWebFinger
+    } = this.props;
+
+    const resource = queryString.parse(this.props.location.search)['resource'];
+
+    return getWebFinger(resource).then((res) => {
+      this.setState({
+        webFinger: JSON.stringify(res.payload)
+      });
+    });
   };
 
   render() {
     return (
       <div>
-        { this.state.data ?  this.state.data : null}
+        { this.state.webFinger ?  this.state.webFinger : null}
       </div>
     );
   }
 }
 
 WebFinger.propTypes = {
-  history: PropTypes.object.isRequired
+  getWebFinger: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  auth: state.authReducer
+  webFinger: state.webfingerReducer
 });
 
-export default connect(mapStateToProps)(WebFinger);
+const mapDispatchToProps = dispatch => ({
+  getWebFinger: resource => dispatch(getWebFinger(resource))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(WebFinger);

@@ -4,7 +4,7 @@ import {
 } from './actionTypes';
 
 export const getWebFinger = resource => async (dispatch) => {
-  const result = await axios.get(`/.well-known/webfinger?resource=${resource}`);
+  const result = await axios.get(`/webfinger/${resource}`);
   return dispatch({
     type: GET_WEB_FINGER,
     payload: result.data

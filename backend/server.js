@@ -6,7 +6,6 @@ const path = require('path');
 const posts = require('./routes/postRoute');
 const users = require('./routes/userRoute');
 const webFinger = require('./routes/webfingerRoute');
-const actor = require('./routes/actorRoute');
 const dbURI = process.env.REACT_APP_DB_URI || require('./secrets').dbURI;
 
 const app = express();
@@ -43,8 +42,7 @@ app.use('/posts', posts);
 app.use('/users', users);
 
 // For ActivityPub and WebFinger
-app.use('/.well-known', webFinger);
-app.use('/u', actor);
+app.use('/webfinger', webFinger);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.resolve(__dirname, '..', 'client', 'build')));

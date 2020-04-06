@@ -34,7 +34,7 @@ export class WebFinger extends Component {
   render() {
     return (
       <div>
-        { this.state.webFinger ?  this.state.webFinger : null}
+        { this.state.webFinger }
       </div>
     );
   }

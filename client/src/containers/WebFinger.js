@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import queryString from 'query-string'
@@ -32,11 +32,7 @@ export class WebFinger extends Component {
   };
 
   render() {
-    return (
-      <div>
-        { this.state.webFinger }
-      </div>
-    );
+    return this.state.webFinger
   }
 }
 

@@ -42,7 +42,7 @@ app.use('/posts', posts);
 app.use('/users', users);
 
 // For ActivityPub and WebFinger
-app.use('/webfinger', webFinger);
+app.use('/.well-known/webfinger', webFinger);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.resolve(__dirname, '..', 'client', 'build')));

@@ -8,7 +8,6 @@ const users = require('./routes/userRoute');
 const webFinger = require('./routes/webfingerRoute');
 const actor = require('./routes/actorRoute');
 const dbURI = process.env.REACT_APP_DB_URI || require('./secrets').dbURI;
-const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -44,7 +43,7 @@ app.use('/posts', posts);
 app.use('/users', users);
 
 // For ActivityPub and WebFinger
-app.use('/.well-known/webfinger', cors(), webFinger);
+app.use('/.well-known', webFinger);
 app.use('/u', actor);
 
 if (process.env.NODE_ENV === 'production') {

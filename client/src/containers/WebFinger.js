@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import queryString from 'query-string'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import axios from 'axios';
+import queryString from 'query-string'
 
 export class WebFinger extends Component {
 
   callWebFinger = async () => {
-    console.log("Got here 1");
     const resource = queryString.parse(this.props.location.search)['resource'];
-    console.log("Got here 2");
+    console.log("Got here 1");
     const response = await axios.get('/.well-known/webfinger', { params: { resource: resource } });
-    console.log("Got here 3");
+    console.log("Got here 2");
     return await JSON.stringify(response.data);
   };
 
@@ -25,17 +26,24 @@ export class WebFinger extends Component {
       if (!this.state.data) {
         this.callWebFinger().then(data => this.setState({data}))
           .catch(err => { console.log("Could not load WebFinger.") });
-          console.log("Got here 4");
       }
   };
 
   render() {
     return (
       <div>
-        { this.state.data ?  this.state.data : "Loading..."}
+        { this.state.data ?  this.state.data : null}
       </div>
     );
   }
 }
 
-export default WebFinger;
+WebFinger.propTypes = {
+  history: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.authReducer
+});
+
+export default connect(mapStateToProps)(WebFinger);

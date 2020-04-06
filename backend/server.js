@@ -44,7 +44,7 @@ app.use('/posts', posts);
 app.use('/users', users);
 
 // For ActivityPub and WebFinger
-app.use('/.well-known/webfinger', webFinger);
+app.use('/.well-known/webfinger', cors(), webFinger);
 app.use('/u', actor);
 
 if (process.env.NODE_ENV === 'production') {

@@ -18,11 +18,17 @@ export class WebFinger extends Component {
 
     const resource = queryString.parse(this.props.location.search)['resource'];
 
-    return getWebFinger(resource).then((res) => {
-      this.setState({
-        webFinger: JSON.stringify(res.payload)
+    return getWebFinger(resource)
+      .then((res) => {
+        this.setState({
+          webFinger: JSON.stringify(res.payload)
+        });
+      })
+      .catch((err) => {
+        this.setState({
+          webFinger: "Could not load WebFinger."
+        });
       });
-    });
   };
 
   render() {

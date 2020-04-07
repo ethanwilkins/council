@@ -5,6 +5,9 @@ const User = require('../models/userModel');
 router.get('/:resource', async (req, res) => {
   const { resource } = req.params;
   const name = resource.match(/:(.*)@/).pop();
+
+  console.log(process.env.NODE_ENV);
+
   try {
     const user = await User.findOne({ name: name }).exec();
     if (!user) {

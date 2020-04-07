@@ -16,6 +16,8 @@ export class WebFinger extends Component {
       getWebFinger
     } = this.props;
 
+    console.log(`Node environment: ${process.env.NODE_ENV}`);
+
     const resource = queryString.parse(this.props.location.search)['resource'];
 
     return getWebFinger(resource)

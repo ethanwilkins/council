@@ -6,8 +6,6 @@ router.get('/:resource', async (req, res) => {
   const { resource } = req.params;
   const name = resource.match(/:(.*)@/).pop();
 
-  console.log(`Node environment: ${process.env.NODE_ENV}`);
-
   try {
     const user = await User.findOne({ name: name }).exec();
     if (!user) {

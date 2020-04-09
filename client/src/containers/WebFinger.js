@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import queryString from 'query-string'
 
-import { getWebFinger } from '../actions/webfingerActions';
+import { getWebFinger } from '../actions/actorActions';
 
 export class WebFinger extends Component {
 
@@ -41,7 +41,7 @@ WebFinger.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  webFinger: state.webfingerReducer
+  webFinger: state.actorReducer
 });
 
 const mapDispatchToProps = dispatch => ({

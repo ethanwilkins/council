@@ -26,5 +26,6 @@ export const GET_USER = 'GET_USER';
 export const UPDATE_FOLLOWERS = 'UPDATE_FOLLOWERS';
 export const UPDATE_FOLLOWING = 'UPDATE_FOLLOWING';
 
-// webfingerActions
+// actorActions
+export const GET_ACTOR = 'GET_ACTOR';
 export const GET_WEB_FINGER = 'GET_WEB_FINGER';

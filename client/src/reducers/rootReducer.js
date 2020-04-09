@@ -4,12 +4,12 @@ import authReducer from './authReducer';
 import errorReducer from './errorReducer';
 import postsReducer from './postsReducer';
 import userReducer from './userReducer';
-import webfingerReducer from './webfingerReducer';
+import actorReducer from './actorReducer';
 
 export default combineReducers({
   authReducer,
   errorReducer,
   postsReducer,
   userReducer,
-  webfingerReducer
+  actorReducer
 });

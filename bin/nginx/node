@@ -6,7 +6,7 @@ server {
     index index.htm index.html;
 
     location / {
-        try_files $uri /index.html;
+        proxy_pass http://localhost:5000;
     }
 
     include /etc/nginx/snippets/letsencrypt.conf;

@@ -54,8 +54,7 @@ const UserSchema = new Schema({
     unique: true
   },
   actorFollowers: {
-    type: String,
-    required: true
+    type: String
   },
   apiKey: {
     type: String,

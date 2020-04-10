@@ -5,7 +5,6 @@ const User = require('../models/userModel');
 router.get('/:name/followers', async (req, res) => {
   const { name } = req.params;
   const domain = req.headers.host;
-
   try {
     const user = await User.findOne({ name: name }).exec();
     if (!user) {
@@ -15,11 +14,7 @@ router.get('/:name/followers', async (req, res) => {
     }
     else {
       user.actorFollowers = user.actorFollowers || '[]';
-
       let followers = JSON.parse(user.actorFollowers);
-
-      console.log("Got here 1");
-
       let followersCollection = {
         "type": "OrderedCollection",
         "totalItems": followers.length,
@@ -33,9 +28,6 @@ router.get('/:name/followers', async (req, res) => {
         },
         "@context":["https://www.w3.org/ns/activitystreams"]
       };
-
-      console.log(followersCollection);
-
       return res.json(followersCollection);
     }
   } catch (err) {

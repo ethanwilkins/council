@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/ethanwilkins/council/issues"
   },
-  "homepage": "https://github.com/ethanwilkins/council#readme",
+  "homepage": "https://socialmaya.com/",
   "dependencies": {
     "bcrypt": "^4.0.1",
     "body-parser": "^1.18.3",

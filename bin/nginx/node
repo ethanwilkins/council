@@ -21,10 +21,6 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 
-    location ~* ^.+\.(jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|pdf|ppt|txt|tar|mid|midi|wav|bmp|rtf|mp3|flv|mpeg|avi)$ {
-        try_files $uri;
-    }
-
     location ~ /.well-known {
         allow all;
     }

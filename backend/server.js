@@ -40,7 +40,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger('dev'));
 app.use('/posts', posts);
 app.use('/users', users);
-
 // For ActivityPub
 app.use('/actors', actors);
 

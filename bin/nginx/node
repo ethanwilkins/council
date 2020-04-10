@@ -13,21 +13,4 @@ server {
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
     }
-
-    include /etc/nginx/snippets/letsencrypt.conf;
-
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
-    listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/socialmaya.com-0002/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/socialmaya.com-0002/privkey.pem; # managed by Certbot
-
-    if ($scheme != "https") {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-    if ($host = $server_addr) {
-        return 301 https://socialmaya.com$request_uri;
-    } # to fix redirection from IP
 }

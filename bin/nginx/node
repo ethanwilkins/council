@@ -7,6 +7,10 @@ server {
         proxy_pass http://localhost:5000;
     }
 
+    location /actors {
+        proxy_pass http://localhost:5000;
+    }
+
     include /etc/nginx/snippets/letsencrypt.conf;
 
     include /etc/letsencrypt/options-ssl-nginx.conf;

@@ -78,7 +78,7 @@ router.post('/signup', async (req, res) => {
       }
 
       // For ActivityPub and WebFinger
-      let domain = req.headers.host;
+      let domain = req.headers.origin;
       // create keypair
       let pair = generateRSAKeypair();
       let actorRecord = createActor(req.body.name, domain, pair.public);

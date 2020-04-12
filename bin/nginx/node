@@ -4,7 +4,7 @@ server {
     server_name socialmaya.com;
 
     location / {
-        rewrite ^/u/(.*)$ /actors/$1 last;
+        rewrite ^/u/(.*)$ /actors/$1 break;
         proxy_pass http://localhost:5000;
     }
 

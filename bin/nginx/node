@@ -4,11 +4,6 @@ server {
     server_name socialmaya.com;
 
     location / {
-        root /home/node/council/client/build;
-        try_files $uri /index.html;
-    }
-
-    location ~ ^/(actors|users|posts)/ {
         proxy_pass http://localhost:5000;
     }
 

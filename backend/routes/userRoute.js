@@ -22,15 +22,15 @@ function createActor(name, domain, pubkey) {
       'https://w3id.org/security/v1'
     ],
 
-    'id': `${domain}/u/${name}`,
+    'id': `https://${domain}/u/${name}`,
     'type': 'Person',
     'preferredUsername': `${name}`,
-    'inbox': `${domain}/api/inbox`,
-    'followers': `${domain}/u_followers/${name}`,
+    'inbox': `https://${domain}/api/inbox`,
+    'followers': `https://${domain}/u_followers/${name}`,
 
     'publicKey': {
-      'id': `${domain}/u/${name}#main-key`,
-      'owner': `${domain}/u/${name}`,
+      'id': `https://${domain}/u/${name}#main-key`,
+      'owner': `https://${domain}/u/${name}`,
       'publicKeyPem': pubkey
     }
   };
@@ -44,7 +44,7 @@ function createWebfinger(name, domain) {
       {
         'rel': 'self',
         'type': 'application/activity+json',
-        'href': `${domain}/u/${name}`
+        'href': `https://${domain}/u/${name}`
       }
     ]
   };
@@ -78,7 +78,7 @@ router.post('/signup', async (req, res) => {
       }
 
       // For ActivityPub and WebFinger
-      let domain = req.headers.origin;
+      let domain = req.headers.origin.replace('https://', '');
       // create keypair
       let pair = generateRSAKeypair();
       let actorRecord = createActor(req.body.name, domain, pair.public);

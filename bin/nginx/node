@@ -7,7 +7,7 @@ server {
         proxy_pass http://localhost:5000;
     }
 
-    location ~ /actors/?$ {
+    location ~ /actors/$ {
         return 302 http://socialmaya.com:5000/actors/$1;
      }
 

@@ -22,15 +22,15 @@ function createActor(name, domain, pubkey) {
       'https://w3id.org/security/v1'
     ],
 
-    'id': `https://${domain}/u/${name}`,
+    'id': `${domain}/u/${name}`,
     'type': 'Person',
     'preferredUsername': `${name}`,
-    'inbox': `https://${domain}/api/inbox`,
-    'followers': `https://${domain}/u_followers/${name}`,
+    'inbox': `${domain}/api/inbox`,
+    'followers': `${domain}/u_followers/${name}`,
 
     'publicKey': {
-      'id': `https://${domain}/u/${name}#main-key`,
-      'owner': `https://${domain}/u/${name}`,
+      'id': `${domain}/u/${name}#main-key`,
+      'owner': `${domain}/u/${name}`,
       'publicKeyPem': pubkey
     }
   };
@@ -44,7 +44,7 @@ function createWebfinger(name, domain) {
       {
         'rel': 'self',
         'type': 'application/activity+json',
-        'href': `https://${domain}/u/${name}`
+        'href': `${domain}/u/${name}`
       }
     ]
   };

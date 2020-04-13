@@ -10,9 +10,6 @@ import LoginPage from '../containers/LoginPage';
 import ProfilePage from '../containers/ProfilePage';
 import SettingsPage from '../containers/SettingsPage';
 import SignupPage from '../containers/SignupPage';
-import ActorPage from '../containers/ActorPage';
-import ActorFollowersPage from '../containers/ActorFollowersPage';
-import WebFinger from '../containers/WebFinger';
 import NotFound from './NotFound';
 
 initAnalytics('UA-126201794-1');
@@ -27,9 +24,6 @@ const Root = () => (
     <Route path="/following" component={FollowingPage} />
     <Route path="/discover" component={DiscoverPage} />
     <Route path="/settings" component={SettingsPage} />
-    <Route path="/u/:name" component={ActorPage} />
-    <Route path="/u_followers/:name" component={ActorFollowersPage} />
-    <Route path="/.well-known/webfinger" component={WebFinger} />
     <Route component={NotFound} />
   </Switch>
 );

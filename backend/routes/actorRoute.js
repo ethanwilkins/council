@@ -1,5 +1,7 @@
 const express = require('express');
 const router = new express.Router();
+const crypto = require('crypto');
+const request = require('request');
 const User = require('../models/userModel');
 
 router.get('/:name/followers', async (req, res) => {
@@ -77,5 +79,109 @@ router.get('/webfinger/:resource', async (req, res) => {
     });
   }
 });
+
+// POST to actors/inbox will come in as /api/inbox
+router.post('/inbox', async (req, res) => {
+  // pass in a name for an account, if the account doesn't exist, create it!
+  let domain = req.app.get('domain');
+  const myURL = new URL(req.body.actor);
+  let targetDomain = myURL.hostname;
+  try {
+    // TODO: add "Undo" follow event
+    if (typeof req.body.object === 'string' && req.body.type === 'Follow') {
+      let name = req.body.object.replace(`https://${domain}/u/`,'');
+      sendAcceptMessage(req.body, name, domain, req, res, targetDomain);
+      // Add the user to the DB of accounts that follow the account
+      User.findOne({name: name})
+        .then(user => {
+          // update followers
+          let followers = parseJSON(user.actorFollowers);
+          if (followers) {
+            followers.push(req.body.actor);
+            // unique items
+            followers = [...new Set(followers)];
+          }
+          else {
+            followers = [req.body.actor];
+          }
+          let followersText = JSON.stringify(followers);
+          user.actorFollowers = followersText;
+          user.save(err => console.log(err));
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      message: 'Something went wrong.'
+    });
+  }
+});
+
+async function signAndSend(message, name, domain, req, res, targetDomain) {
+  // get the URI of the actor object and append 'inbox' to it
+  let inbox = message.object.actor+'/inbox';
+  let inboxFragment = inbox.replace('https://'+targetDomain,'');
+
+  try {
+    // get the private key
+    let user = await User.findOne({ name: name }).exec();
+    if (!user) {
+      return res.status(404).send(`No record found for ${name}.`);
+    }
+    else {
+      let privkey = user.privkey;
+      const signer = crypto.createSign('sha256');
+      let d = new Date();
+      let stringToSign = `(request-target): post ${inboxFragment}\nhost: ${targetDomain}\ndate: ${d.toUTCString()}`;
+      signer.update(stringToSign);
+      signer.end();
+      const signature = signer.sign(privkey);
+      const signature_b64 = signature.toString('base64');
+      let header = `keyId="https://${domain}/u/${name}",headers="(request-target) host date",signature="${signature_b64}"`;
+      request({
+        url: inbox,
+        headers: {
+          'Host': targetDomain,
+          'Date': d.toUTCString(),
+          'Signature': header
+        },
+        method: 'POST',
+        json: true,
+        body: message
+      }, function (error, response){
+        if (error) {
+          console.log('Error:', error, response.body);
+        }
+        else {
+          console.log('Response:', response.body);
+        }
+      });
+      return res.status(200);
+    }
+  } catch(err) {
+      return res.status(500).json({
+        message: 'Something went wrong.'
+      });
+  }
+}
+
+function sendAcceptMessage(thebody, name, domain, req, res, targetDomain) {
+  const guid = crypto.randomBytes(16).toString('hex');
+  let message = {
+    '@context': 'https://www.w3.org/ns/activitystreams',
+    'id': `https://${domain}/${guid}`,
+    'type': 'Accept',
+    'actor': `https://${domain}/u/${name}`,
+    'object': thebody,
+  };
+  signAndSend(message, name, domain, req, res, targetDomain);
+}
+
+function parseJSON(text) {
+  try {
+    return JSON.parse(text);
+  } catch(e) {
+    return null;
+  }
+}
 
 module.exports = router;

@@ -5,6 +5,7 @@ server {
 
     location / {
         rewrite ^/.well-known/webfinger?(.*)$ /actors/webfinger/$query_string last;
+        rewrite ^/api/inbox /actors/inbox last;
         rewrite ^/u/(.*)$ /actors/$1 last;
         proxy_pass http://localhost:5000;
     }

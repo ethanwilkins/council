@@ -86,33 +86,10 @@ router.post('/inbox', async (req, res) => {
   const domain = req.hostname;
   const myURL = new URL(req.body.actor);
   const targetDomain = myURL.hostname;
-
-  console.log(`Domain: ${domain}`);
-  console.log(`myURL: ${myURL}`);
-  console.log(`targetDomain: ${targetDomain}`);
-
   try {
     // TODO: add "Undo" follow event
     if (typeof req.body.object === 'string' && req.body.type === 'Follow') {
       let name = req.body.object.replace(`https://${domain}/u/`,'');
-
-      console.log(`User name: ${name}`);
-
-      let user = await User.findOne({ name: name }).exec();
-      if (user) {
-        return res.status(200).json({
-          message: `Record found for ${name}.`,
-          output: {
-            domain: domain,
-            myURL: myURL,
-            targetDomain: targetDomain,
-            a: `.. ${req.headers.origin}`,
-            b: `.. ${req.app.get('domain')}`,
-            c: `.. ${req.hostname}`
-          }
-        });
-      }
-
       sendAcceptMessage(req.body, name, domain, req, res, targetDomain);
       // Add the user to the DB of accounts that follow the account
       User.findOne({name: name})

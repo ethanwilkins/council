@@ -106,8 +106,8 @@ router.post('/inbox', async (req, res) => {
             domain: domain,
             myURL: myURL,
             targetDomain: targetDomain,
-            'req.headers.origin': req.headers.origin,
-            "req.app.get('domain')": req.app.get('domain')
+            reg_headers_origin: req.headers.origin,
+            app_get_domain: req.app.get('domain')
           }
         });
       }

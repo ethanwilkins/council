@@ -98,6 +98,14 @@ router.post('/inbox', async (req, res) => {
 
       console.log(`User name: ${name}`);
 
+      let user = await User.findOne({ name: name }).exec();
+      if (!user) {
+        return res.status(404).json({
+          message: `No record found for ${name}.`,
+          output: `domain: ${domain}, myURL: ${myURL}, targetDomain: ${targetDomain}`
+        });
+      }
+
       sendAcceptMessage(req.body, name, domain, req, res, targetDomain);
       // Add the user to the DB of accounts that follow the account
       User.findOne({name: name})

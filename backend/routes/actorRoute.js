@@ -2,6 +2,8 @@ const express = require('express');
 const router = new express.Router();
 const crypto = require('crypto');
 const request = require('request');
+const axios = require('axios');
+
 const User = require('../models/userModel');
 
 router.get('/:name/followers', async (req, res) => {
@@ -137,7 +139,7 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
       const signature = signer.sign(privkey);
       const signature_b64 = signature.toString('base64');
       let header = `keyId="https://${domain}/u/${name}",headers="(request-target) host date",signature="${signature_b64}"`;
-      request({
+      const result = await request({
         url: inbox,
         headers: {
           'Host': targetDomain,
@@ -147,14 +149,8 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
         method: 'POST',
         json: true,
         body: message
-      }, function (error, response){
-        if (error) {
-          console.log('Error:', error, response.body);
-        }
-        else {
-          console.log('Response:', response.body);
-        }
       });
+      console.log(result);
       return res.status(200);
     }
   } catch(err) {

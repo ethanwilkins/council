@@ -135,16 +135,21 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
       signer.update(stringToSign);
       signer.end();
       const signature = signer.sign(privateKey);
-
-      // Was able to get here
-
       const signature_b64 = signature.toString('base64');
       let header = `keyId="https://${domain}/u/${name}",headers="(request-target) host date",signature="${signature_b64}"`;
+
+      // Was able to get here
 
       if (header) {
         return res.status(200).json({
           message: 'Got this far.',
-          output: header
+          output: {
+            inbox: inbox,
+            targetDomain: targetDomain,
+            date: d.toUTCString(),
+            message: message,
+            header: header
+          }
         });
       }
 
@@ -159,6 +164,7 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
         json: true,
         body: message
       });
+
       console.log(result);
       return res.status(200);
     }

@@ -121,15 +121,9 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
   // get the URI of the actor object and append 'inbox' to it
   let inbox = message.object.actor+'/inbox';
   let inboxFragment = inbox.replace('https://'+targetDomain,'');
-
-  let test = 1;
-
   try {
     // get the private key
     let user = await User.findOne({ name: name }).exec();
-
-    test++;
-
     if (!user) {
       return res.status(404).send(`No record found for ${name}.`);
     }
@@ -141,20 +135,18 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
       signer.update(stringToSign);
       signer.end();
 
-      test++;
-
+      // Was able to get here
       const signature = signer.sign(privateKey);
 
-      test++;
+      if (signature) {
+        return res.status(200).json({
+          message: 'Got this far.',
+          signature: signature
+        });
+      }
 
       const signature_b64 = signature.toString('base64');
-
-      test++;
-
       let header = `keyId="https://${domain}/u/${name}",headers="(request-target) host date",signature="${signature_b64}"`;
-
-      test++;
-
       const result = await request({
         url: inbox,
         headers: {
@@ -166,9 +158,6 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
         json: true,
         body: message
       });
-
-      test++;
-
       console.log(result);
       return res.status(200);
     }

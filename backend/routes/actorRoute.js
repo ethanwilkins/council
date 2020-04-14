@@ -83,7 +83,7 @@ router.get('/webfinger/:resource', async (req, res) => {
 // POST to actors/inbox will come in as /api/inbox
 router.post('/inbox', async (req, res) => {
   // pass in a name for an account, if the account doesn't exist, create it!
-  const domain = req.headers.origin.replace('https://', '');
+  const domain = req.headers.host;
   const myURL = new URL(req.body.actor);
   const targetDomain = myURL.hostname;
 
@@ -99,10 +99,10 @@ router.post('/inbox', async (req, res) => {
       console.log(`User name: ${name}`);
 
       let user = await User.findOne({ name: name }).exec();
-      if (user) {
-        return res.status(200).json({
-          message: `Found record for ${name}.`,
-          output: `domain: ${domain}, myURL: ${myURL}, targetDomain: ${targetDomain}`
+      if (!user) {
+        return res.status(404).json({
+          message: `No record found for ${name}.`,
+          output: `domain: ${domain}, myURL: ${myURL}, targetDomain: ${targetDomain}, req.headers.origin: ${req.headers.origin};`
         });
       }
 

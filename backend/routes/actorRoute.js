@@ -122,9 +122,14 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
   let inbox = message.object.actor+'/inbox';
   let inboxFragment = inbox.replace('https://'+targetDomain,'');
 
+  let test = 1;
+
   try {
     // get the private key
     let user = await User.findOne({ name: name }).exec();
+
+    test++;
+
     if (!user) {
       return res.status(404).send(`No record found for ${name}.`);
     }
@@ -135,9 +140,15 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
       let stringToSign = `(request-target): post ${inboxFragment}\nhost: ${targetDomain}\ndate: ${d.toUTCString()}`;
       signer.update(stringToSign);
       signer.end();
+
+      test++;
+
       const signature = signer.sign(privkey);
       const signature_b64 = signature.toString('base64');
       let header = `keyId="https://${domain}/u/${name}",headers="(request-target) host date",signature="${signature_b64}"`;
+
+      test++;
+
       const result = await request({
         url: inbox,
         headers: {
@@ -149,12 +160,15 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
         json: true,
         body: message
       });
+
+      test++;
+      
       console.log(result);
       return res.status(200);
     }
   } catch(err) {
       return res.status(500).json({
-        message: 'Something went wrong. (b)'
+        message: `Something went wrong. (${test})`
       });
   }
 }

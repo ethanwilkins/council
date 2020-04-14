@@ -83,13 +83,21 @@ router.get('/webfinger/:resource', async (req, res) => {
 // POST to actors/inbox will come in as /api/inbox
 router.post('/inbox', async (req, res) => {
   // pass in a name for an account, if the account doesn't exist, create it!
-  let domain = req.app.get('domain');
+  const domain = req.headers.host;
   const myURL = new URL(req.body.actor);
-  let targetDomain = myURL.hostname;
+  const targetDomain = myURL.hostname;
+
+  console.log(`Domain: ${domain}`);
+  console.log(`myURL: ${myURL}`);
+  console.log(`targetDomain: ${targetDomain}`);
+
   try {
     // TODO: add "Undo" follow event
     if (typeof req.body.object === 'string' && req.body.type === 'Follow') {
       let name = req.body.object.replace(`https://${domain}/u/`,'');
+
+      console.log(`User name: ${name}`);
+
       sendAcceptMessage(req.body, name, domain, req, res, targetDomain);
       // Add the user to the DB of accounts that follow the account
       User.findOne({name: name})

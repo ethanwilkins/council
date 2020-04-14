@@ -83,7 +83,7 @@ router.get('/webfinger/:resource', async (req, res) => {
 // POST to actors/inbox will come in as /api/inbox
 router.post('/inbox', async (req, res) => {
   // pass in a name for an account, if the account doesn't exist, create it!
-  const domain = req.headers.host;
+  const domain = req.headers.origin.replace('https://', '');
   const myURL = new URL(req.body.actor);
   const targetDomain = myURL.hostname;
 

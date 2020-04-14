@@ -102,7 +102,13 @@ router.post('/inbox', async (req, res) => {
       if (!user) {
         return res.status(404).json({
           message: `No record found for ${name}.`,
-          output: `domain: ${domain}, myURL: ${myURL}, targetDomain: ${targetDomain}, req.headers.origin: ${req.headers.origin};`
+          output: {
+            domain: domain,
+            myURL: myURL,
+            targetDomain: targetDomain,
+            'req.headers.origin': req.headers.origin,
+            "req.app.get('domain')": req.app.get('domain')
+          }
         });
       }
 

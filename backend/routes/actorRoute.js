@@ -134,7 +134,7 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
       return res.status(404).send(`No record found for ${name}.`);
     }
     else {
-      let privkey = user.privkey;
+      let privateKey = user.privateKey;
       const signer = crypto.createSign('sha256');
       let d = new Date();
       let stringToSign = `(request-target): post ${inboxFragment}\nhost: ${targetDomain}\ndate: ${d.toUTCString()}`;
@@ -143,10 +143,10 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
 
       test++;
 
-      const signature = signer.sign(privkey);
+      const signature = signer.sign(privateKey);
 
       test++;
-      
+
       const signature_b64 = signature.toString('base64');
 
       test++;

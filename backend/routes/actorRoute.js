@@ -6,7 +6,9 @@ const User = require('../models/userModel');
 
 router.get('/:name/followers', async (req, res) => {
   const { name } = req.params;
-  const domain = req.headers.origin.replace('https://', '');
+  // const domain = req.headers.host;
+  // const domain = req.headers.origin.replace('https://', '');
+  const domain = req.app.get('domain');
   try {
     const user = await User.findOne({ name: name }).exec();
     if (!user) {

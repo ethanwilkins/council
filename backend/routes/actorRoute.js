@@ -99,9 +99,9 @@ router.post('/inbox', async (req, res) => {
       console.log(`User name: ${name}`);
 
       let user = await User.findOne({ name: name }).exec();
-      if (!user) {
-        return res.status(404).json({
-          message: `No record found for ${name}.`,
+      if (user) {
+        return res.status(200).json({
+          message: `Record found for ${name}.`,
           output: {
             domain: domain,
             myURL: myURL,

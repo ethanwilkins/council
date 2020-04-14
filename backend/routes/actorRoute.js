@@ -111,7 +111,7 @@ router.post('/inbox', async (req, res) => {
     }
   } catch (err) {
     return res.status(500).json({
-      message: 'Something went wrong.'
+      message: 'Something went wrong. (a)'
     });
   }
 });
@@ -159,7 +159,7 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
     }
   } catch(err) {
       return res.status(500).json({
-        message: 'Something went wrong.'
+        message: 'Something went wrong. (b)'
       });
   }
 }

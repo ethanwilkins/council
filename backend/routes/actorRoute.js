@@ -2,7 +2,6 @@ const express = require('express');
 const router = new express.Router();
 const crypto = require('crypto');
 const request = require('request');
-const axios = require('axios');
 
 const User = require('../models/userModel');
 

@@ -134,19 +134,20 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
       let stringToSign = `(request-target): post ${inboxFragment}\nhost: ${targetDomain}\ndate: ${d.toUTCString()}`;
       signer.update(stringToSign);
       signer.end();
-
-      // Was able to get here
       const signature = signer.sign(privateKey);
 
-      if (signature) {
-        return res.status(200).json({
-          message: 'Got this far.',
-          signature: signature
-        });
-      }
+      // Was able to get here
 
       const signature_b64 = signature.toString('base64');
       let header = `keyId="https://${domain}/u/${name}",headers="(request-target) host date",signature="${signature_b64}"`;
+
+      if (header) {
+        return res.status(200).json({
+          message: 'Got this far.',
+          output: header
+        });
+      }
+
       const result = await request({
         url: inbox,
         headers: {

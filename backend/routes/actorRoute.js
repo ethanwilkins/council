@@ -90,7 +90,7 @@ router.post('/inbox', async (req, res) => {
     // TODO: add "Undo" follow event
     if (typeof req.body.object === 'string' && req.body.type === 'Follow') {
       let name = req.body.object.replace(`https://${domain}/u/`,'');
-      sendAcceptMessage(req.body, name, domain, req, res, targetDomain);
+      await sendAcceptMessage(req.body, name, domain, req, res, targetDomain);
       // Add the user to the DB of accounts that follow the account
       User.findOne({name: name})
         .then(user => {
@@ -137,7 +137,7 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
       const signature = signer.sign(privkey);
       const signature_b64 = signature.toString('base64');
       let header = `keyId="https://${domain}/u/${name}",headers="(request-target) host date",signature="${signature_b64}"`;
-      request({
+      await request({
         url: inbox,
         headers: {
           'Host': targetDomain,
@@ -173,7 +173,7 @@ function sendAcceptMessage(thebody, name, domain, req, res, targetDomain) {
     'actor': `https://${domain}/u/${name}`,
     'object': thebody,
   };
-  signAndSend(message, name, domain, req, res, targetDomain);
+  await signAndSend(message, name, domain, req, res, targetDomain);
 }
 
 function parseJSON(text) {

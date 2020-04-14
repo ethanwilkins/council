@@ -144,10 +144,13 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
       test++;
 
       const signature = signer.sign(privkey);
-      const signature_b64 = signature.toString('base64');
 
       test++;
       
+      const signature_b64 = signature.toString('base64');
+
+      test++;
+
       let header = `keyId="https://${domain}/u/${name}",headers="(request-target) host date",signature="${signature_b64}"`;
 
       test++;

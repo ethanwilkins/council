@@ -140,18 +140,18 @@ async function signAndSend(message, name, domain, req, res, targetDomain) {
 
       // Was able to get here
 
-      // if (header) {
-      //   return res.status(200).json({
-      //     message: 'Got this far.',
-      //     output: {
-      //       inbox: inbox,
-      //       targetDomain: targetDomain,
-      //       date: d.toUTCString(),
-      //       message: message,
-      //       header: header
-      //     }
-      //   });
-      // }
+      if (header) {
+        return res.status(200).json({
+          message: 'Got this far.',
+          output: {
+            inbox: inbox,
+            targetDomain: targetDomain,
+            date: d.toUTCString(),
+            message: message,
+            header: header
+          }
+        });
+      }
 
       const result = await request({
         url: inbox,

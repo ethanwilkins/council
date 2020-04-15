@@ -38,7 +38,14 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(morgan('combined', { stream: winston.stream }));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined', { stream: winston.stream }));
+}
+else {
+  app.use(morgan('dev'));
+}
+
 app.use('/posts', posts);
 app.use('/users', users);
 // For ActivityPub

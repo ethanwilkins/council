@@ -91,7 +91,7 @@ router.post('/inbox', async (req, res) => {
   const targetDomain = myURL.hostname;
 
   try {
-    let writer = fs.createWriteStream(`${appRoot}/backend/logs/postInboxOutput.json`);
+    let writer = fs.createWriteStream(`${__dirname.replace('/routes', '')}/logs/postInboxOutput.json`);
     writer.write(JSON.stringify(req.body));
 
     // TODO: add "Undo" follow event

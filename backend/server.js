@@ -44,6 +44,9 @@ app.use('/users', users);
 app.use('/actors', actors);
 
 if (process.env.NODE_ENV === 'production') {
+  // Logs server requests to morgan.log
+  app.use(logger('common', { skip: function(req, res) { return res.statusCode < 400 }, stream: __dirname + '/../morgan.log' }));
+  // Prepares client build to be delivered by server
   app.use(express.static(path.resolve(__dirname, '..', 'client', 'build')));
   app.get('*', (req, res) => {
     res.sendFile(

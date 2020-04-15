@@ -87,17 +87,20 @@ router.get('/webfinger/:resource', async (req, res) => {
 router.post('/inbox', async (req, res) => {
   // pass in a name for an account, if the account doesn't exist, create it!
   const domain = req.hostname;
-  const myURL = new URL(req.body.actor);
-  const targetDomain = myURL.hostname;
+  
+  if (req.body.actor) {
+    const myURL = new URL(req.body.actor);
+    const targetDomain = myURL.hostname;
+  }
 
   try {
-    let writer = fs.createWriteStream(`${__dirname.replace('/routes', '')}/logs/postInboxOutput.json`);
+    let writer = fs.createWriteStream(`${appRoot}/backend/logs/postInboxOutput.json`, {flags:'a'});
 
-    if (req.body) {
+    if (req.body.actor) {
       writer.write(JSON.stringify(req.body));
     }
     else {
-      writer.write("Fail.");
+      writer.write("No request body was sent.");
     }
 
     // TODO: add "Undo" follow event

@@ -2,6 +2,8 @@ const express = require('express');
 const router = new express.Router();
 const crypto = require('crypto');
 const request = require('request');
+const appRoot = require('app-root-path');
+const fs = require('fs');
 
 const User = require('../models/userModel');
 
@@ -87,7 +89,11 @@ router.post('/inbox', async (req, res) => {
   const domain = req.hostname;
   const myURL = new URL(req.body.actor);
   const targetDomain = myURL.hostname;
+
   try {
+    let writer = fs.createWriteStream(`${appRoot}/backend/logs/postInboxOutput.json`);
+    writer.write(JSON.stringify(req.body));
+
     // TODO: add "Undo" follow event
     if (typeof req.body.object === 'string' && req.body.type === 'Follow') {
       let name = req.body.object.replace(`https://${domain}/u/`,'');

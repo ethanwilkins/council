@@ -92,7 +92,13 @@ router.post('/inbox', async (req, res) => {
 
   try {
     let writer = fs.createWriteStream(`${__dirname.replace('/routes', '')}/logs/postInboxOutput.json`);
-    writer.write(JSON.stringify(req.body));
+
+    if (req.body) {
+      writer.write(JSON.stringify(req.body));
+    }
+    else {
+      writer.write("Fail.");
+    }
 
     // TODO: add "Undo" follow event
     if (typeof req.body.object === 'string' && req.body.type === 'Follow') {

@@ -20,7 +20,7 @@
     "url": "git+https://github.com/ethanwilkins/council.git"
   },
   "author": "Forrest Wilkins",
-  "license": "GPL",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/ethanwilkins/council/issues"
   },

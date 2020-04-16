@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const request = require('request');
 const appRoot = require('app-root-path');
 const fs = require('fs');
+const os = require('os');
 
 const User = require('../models/userModel');
 
@@ -87,20 +88,21 @@ router.get('/webfinger/:resource', async (req, res) => {
 router.post('/inbox', async (req, res) => {
   // pass in a name for an account, if the account doesn't exist, create it!
   const domain = req.hostname;
-  
+
+  // Skipping assignment for testing
   if (req.body.actor) {
     const myURL = new URL(req.body.actor);
     const targetDomain = myURL.hostname;
   }
 
   try {
+    // Outputs request body for testing
     let writer = fs.createWriteStream(`${appRoot}/backend/logs/postInboxOutput.json`, {flags:'a'});
-
     if (req.body.actor) {
-      writer.write(JSON.stringify(req.body));
+      writer.write(JSON.stringify(req.body) + os.EOL.repeat(2));
     }
     else {
-      writer.write("No request body was sent.");
+      writer.write("No request body was sent." + os.EOL.repeat(2));
     }
 
     // TODO: add "Undo" follow event

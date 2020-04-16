@@ -39,6 +39,7 @@ mongoose
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Sets up logging for different environments
 if (process.env.NODE_ENV === 'production') {
   app.use(morgan('combined', { stream: winston.stream }));
 }
@@ -48,7 +49,7 @@ else {
 
 app.use('/posts', posts);
 app.use('/users', users);
-// For ActivityPub
+// For ActivityPub/WebFinger
 app.use('/actors', actors);
 
 if (process.env.NODE_ENV === 'production') {
